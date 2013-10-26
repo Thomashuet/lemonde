@@ -1,0 +1,58 @@
+digraph org {
+  rankdir=LR;
+  node [shape=none];
+  <frwiki-pages-articles.xml>;
+  <frwiki-langlinks.sql>;
+  <stopwords>;
+  <frwiki-links>;
+  <frwiki-redirections>;
+  <frwiki-ids>;
+  <frwiki-en-links>;
+  <frwiki-to-yago>;
+  <frwiki-links-canon>;
+  <trie-frwiki>;
+  <frwiki-to-yago>;
+  <trie-yago>;
+  <*.json>;
+  <*.txt>;
+  <articles.tsv>;
+  <mentions.tsv>;
+  <isInCountry>;
+  <locations.tsv>;
+  node [shape=ellipse];
+  subgraph clusterprep {
+    label="prep.sh";
+    <frwiki-pages-articles.xml> -> <link> [arrowhead=none];
+    <link> -> <frwiki-links>;
+    <stopwords> -> <Canonicalize> [arrowhead=none];
+    <frwiki-links> -> <Canonicalize> [arrowhead=none];
+    <frwiki-redirections> -> <Canonicalize> [arrowhead=none];
+    <Canonicalize> -> <frwiki-links-canon>;
+    <frwiki-langlinks.sql> -> <langlink> [arrowhead=none];
+    <langlink> -> <frwiki-en-links>;
+    <frwiki-pages-articles.xml> -> <redirect> [arrowhead=none];
+    <redirect> -> <frwiki-redirections>;
+    <frwiki-pages-articles.xml> -> <id> [arrowhead=none];
+    <id> -> <frwiki-ids>;
+    <frwiki-ids> -> <Convert> [arrowhead=none];
+    <frwiki-en-links> -> <Convert> [arrowhead=none];
+    <Convert> -> <frwiki-to-yago>;
+    <frwiki-links-canon> -> <Trie> [arrowhead=none];
+    <Trie> -> <trie-frwiki>;
+    <trie-frwiki> -> <Frwiki2Yago> [arrowhead=none];
+    <frwiki-to-yago> -> <Frwiki2Yago> [arrowhead=none];
+  }
+  <Frwiki2Yago> -> <trie-yago>;
+  <trie-yago> -> <Main> [arrowhead=none];
+  subgraph clusterrun {
+    label="run.sh";
+    <*.json> -> <JsonParse> [arrowhead=none];
+    <JsonParse> -> <*.txt>;
+    <JsonParse> -> <articles.tsv>;
+    <*.txt> -> <Main> [arrowhead=none];
+    <Main> -> <mentions.tsv>;
+    <mentions.tsv> -> <Locate> [arrowhead=none];
+    <isInCountry> -> <Locate> [arrowhead=none];
+    <Locate> -> <locations.tsv>;
+  }
+}

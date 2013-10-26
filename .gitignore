@@ -1,0 +1,17 @@
+*.cm[iox]
+*.o
+.*.swp
+*.aux
+*.log
+*.out
+*.pdf
+*.toc
+doc/README.tex
+src/fr/
+src/id
+src/langlink
+src/link
+src/redirect
+*.json
+*.txt
+*.tar.gz
