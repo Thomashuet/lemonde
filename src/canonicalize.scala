@@ -66,8 +66,8 @@ object Canonicalize {
       val src = if (args.length == 3) Source.fromFile(args(2)) else Source.stdin
       for (l <- src.getLines) {
         val a = l split "\t"
-        if ((a.length >= 3) && (a(1) != a(1).toLowerCase) && !(commonWords contains a(1)))
-          println(canonicalize(a(0))+"\t"+a(1)+"\t"+redirect(canonicalize(a(2))))
+        if ((a.length >= 3) && (a(1) != a(1).toLowerCase) && !(commonWords contains a(1)) && !(a(2) contains '#'))
+          println(canonicalize(a(0))+"\t"+text(a(1))+"\t"+redirect(canonicalize(a(2))))
       }
     }
   }
